@@ -80,6 +80,8 @@
           .map((line) => {
             if (!line) return "";
 
+            line = line.replace(/`/g, "");
+            
             if (line.endsWith(",")) {
               line = line.slice(0, -1).trim();
             }
