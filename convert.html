@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQL string convert laravel</title>
+    <style>
+      body {
+        font-family: 'Arial', 'Verdana', 'Helvetica', sans-serif;
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 16px;
+        border-radius: 10px;
+        color: #5e5e5e;
+        background-color: #ffffff;
+      }
+      .output {
+        padding-top: 55px;
+        background-color: #ffffff;
+      }
+      .text-convert {
+        font-size: 20px;
+        position: relative;
+      }
+      .text {
+        padding-left: 34px;
+        color: #5e5e5e;
+      }
+      .coppy {
+        height: 25px;
+        position: absolute;
+        top: 20px;
+        left: 10px;
+        z-index: 10;
+        background-color: #ffffff;
+      }
+      .logo {
+        float: left;
+        height: 30px;
+      }
+      span {
+        cursor: pointer;
+      }
+      .clear {
+        clear: both;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <img class="logo" src="img/lemon.png" alt="" />
+      <h2 class="text">Lemon</h2>
+      <div class="clear"></div>
+    </div>
+    <textarea id="input" rows="10" placeholder="Your mysql..."></textarea>
+
+    <div class="text-convert">
+      <textarea
+        disabled
+        id="output"
+        class="output"
+        rows="10"
+        readonly
+      ></textarea>
+      <span
+        ><img class="coppy" src="img/coppy.png" alt="" id="copyButton"
+      /></span>
+    </div>
+
+    <script>
+      function convertString(input) {
+        const lines = input.split("\n").map((line) => line.trim());
+        return lines
+          .map((line) => {
+            if (!line) return "";
+
+            if (line.endsWith(",")) {
+              line = line.slice(0, -1).trim();
+            }
+
+            if (line.includes("(")) {
+              return `DB::raw('${line}'),`;
+            } else {
+              return `'${line}',`;
+            }
+          })
+          .join("\n");
+      }
+
+      const inputField = document.getElementById("input");
+      const outputField = document.getElementById("output");
+
+      inputField.addEventListener("input", () => {
+        const inputText = inputField.value;
+        const convertedText = convertString(inputText);
+        outputField.value = convertedText;
+      });
+
+      const copyButton = document.getElementById("copyButton");
+      copyButton.addEventListener("click", () => {
+        navigator.clipboard.writeText(outputField.value);
+      });
+    </script>
+  </body>
+</html>
